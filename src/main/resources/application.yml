@@ -4,14 +4,14 @@ server:
 # Oracle #
 spring:
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521:xe
-    username: dbbiblioteca
-    password: abc123
-    driverClassName: oracle.jdbc.OracleDriver
+    url: jdbc:mysql://d6rii63wp64rsfb5.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/j5rh7he4sgm6izvq
+    username: g5zzt5btgbdpnre1
+    password: v0nmzyiyyoq5kr72
+    driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.OracleDialect
+        dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
     hibernate:
       ddl-auto: update

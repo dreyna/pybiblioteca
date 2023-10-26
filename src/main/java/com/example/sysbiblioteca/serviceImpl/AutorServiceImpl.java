@@ -46,4 +46,10 @@ public class AutorServiceImpl implements Operaciones<Autor>{
 		return autorRepository.findAll();
 	}
 
+	public Autor searchAutor(String nombres) {		
+		return autorRepository.findAutorByNombresNative(nombres);
+	}
+	public List<Autor> searchAutorNombres(String nombres) {		
+		return autorRepository.searchByNombresStartsWith(nombres);
+	}
 }

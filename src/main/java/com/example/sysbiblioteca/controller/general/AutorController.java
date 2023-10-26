@@ -14,6 +14,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import static com.example.sysbiblioteca.commons.GlobalConstans.API_AUTORES;
 @RestController
 @RequestMapping(API_AUTORES)
+@CrossOrigin(origins = {"http://localhost:4200","http://localhost:8082/api/autores"})
 public class AutorController {
 	@Autowired
 	private AutorServiceImpl autorServiceImpl;
@@ -49,6 +51,24 @@ public class AutorController {
           }
     }
 	
+	@GetMapping("/buscar/{nombres}")
+	public ResponseEntity<Autor> getAutorByNombres(@PathVariable("nombres") String nombres){
+		Autor autor = autorServiceImpl.searchAutor(nombres);
+	    if (autor!=null) {
+	      return new ResponseEntity<Autor>(autor, HttpStatus.OK);
+	    } else {
+	      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    }
+	}
+	@GetMapping("/buscar/otro/{nombres}")
+	public ResponseEntity<List<Autor>> getBuscarAutores(@PathVariable("nombres") String nombres){
+		List<Autor> autores = autorServiceImpl.searchAutorNombres(nombres);
+	    if (autores!=null) {
+	      return new ResponseEntity<List<Autor>>(autores, HttpStatus.OK);
+	    } else {
+	      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    }
+	}
 	@GetMapping("/{id}")
 	public ResponseEntity<Autor> getAutorById(@PathVariable("id") Long id){
 		Optional<Autor> carData = autorServiceImpl.read(id);
