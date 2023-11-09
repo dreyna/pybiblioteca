@@ -18,6 +18,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -40,10 +41,10 @@ public class Usuario {
     @SequenceGenerator(name = "seqUsuarios", allocationSize = 1, sequenceName = "SEQ_USUARIOS")
     @Builder.Default
     private Long id=0L;
-	@Column(name = "USERNAME")
+	@Column(name = "USERNAME", unique = true, length = 20)
 	@NotNull @NotBlank    
     private String username;
-	@Column(name = "PASSWORD")
+	@Column(name = "PASSWORD", length = 120)
 	@NotNull @NotBlank    
     private String password;
 	@Column(name = "ESTADO")
@@ -58,14 +59,12 @@ public class Usuario {
 	@JsonIgnore
 	private Set<Prestamo> prestamos;
 	
-	@ManyToMany(
-			cascade=CascadeType.ALL
-	)
+	@ManyToMany( fetch = FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinTable(
 	  name = "TBL_USUARIO_ROL", 
 	  joinColumns = @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID"), 
-	  inverseJoinColumns = @JoinColumn(name = "ROL_ID", referencedColumnName = "ID")
-	 )
+	  inverseJoinColumns = @JoinColumn(name = "ROL_ID", referencedColumnName = "ID"), uniqueConstraints = 
+  	  {@UniqueConstraint(columnNames = {"USUARIO_ID", "ROL_ID"})})
 	private Set<Rol> roles;
 	
 }
